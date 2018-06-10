@@ -84,12 +84,6 @@ public class ConsoleSnek {
     }
 
     private static void draw(char[][] map) {
-        /*for (char[] mapRow : map) {
-            for (char mapPiece : mapRow) {
-                System.out.print(mapPiece);
-            }
-            System.out.print("\n");
-        }*/
 		for (int i = 0, mapLength = map.length; i < mapLength; i++) {
             char[] mapRow = map[i];            
             for (int i1 = 0, mapRowLength = mapRow.length; i1 < mapRowLength; i1++) {
