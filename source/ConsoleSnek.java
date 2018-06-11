@@ -1,5 +1,10 @@
+import java.io.IOException;
+
 public class ConsoleSnek {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+		final String os = System.getProperty("os.name");
+
         InputThread inputThread = new InputThread();
         inputThread.start();
 
@@ -12,6 +17,7 @@ public class ConsoleSnek {
         while (snek.isAlive) {
 
             map.reset();
+			
 
             switch(inputThread.input) {
                 case "w":
@@ -77,6 +83,13 @@ public class ConsoleSnek {
 
             map.map[snek.snek[0].posX][snek.snek[0].posY] = snek.snek[0].body;
 
+			
+			if (os.contains("Windows")) {
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			} else {
+				Runtime.getRuntime().exec("clear");
+			}
+			
             draw(map.map);
             System.out.println("Score: " + snek.score + "\t\t Speed: " + snek.speed);
             wait(500 - 50 * snek.speed);
@@ -108,14 +121,14 @@ public class ConsoleSnek {
             }
             System.out.print("\n");
         }
-		cls();
+		//cls();
     }
 
-    private static void cls() {
+    /*private static void cls() {
         for (int i = 0; i < 3; i++) {
             System.out.print("\n");
         }
-    }
+    }*/
 
     public static void wait (int k){
         long time0, time1;
