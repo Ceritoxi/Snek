@@ -53,8 +53,10 @@ public class ConsoleSnek {
                     }
                     break;
                 case " ":
-                    snek.speed++;
-                    inputThread.input = "";
+					if (snek.speed < 8) {
+						snek.speed++;
+						inputThread.input = "";
+					}
             }
 
             snek.snekMoves(currentDirection);
@@ -92,7 +94,7 @@ public class ConsoleSnek {
 			
             draw(map.map);
             System.out.println("Score: " + snek.score + "\t\t Speed: " + snek.speed);
-            wait(500 - 50 * snek.speed);
+            wait(500 - 50  * snek.speed);
         }
     }
 
