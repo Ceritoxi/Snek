@@ -4,7 +4,7 @@ public class Snek {
 	int speed;
 	int score;
 	int size;
-	int direction;
+	Direction direction;
 	SnekPiece[] snek;
 
 	public Snek() {
@@ -12,7 +12,7 @@ public class Snek {
 		this.speed = 1;
 		this.size = 0;
 		this.score = 0;
-		this.direction = 1;
+		this.direction = Direction.right;
 		snek = new SnekPiece[2501];
 		snek[this.size] = new SnekPiece(3, 3, (char) 62);
 		snek[this.size].isActive = true;
@@ -26,48 +26,44 @@ public class Snek {
 		return snek[0];
 	}
 
-	public int commandSnek(InputThread inputThread) {
-		int directionBuffer;
-		switch (inputThread.input) {
-		case "w":
-		case "W":
-		case "8":
-			directionBuffer = direction;
-			if (/* (0 + 2) % 4 */2 != directionBuffer) {
-				direction = 0;
-			}
-			break;
-		case "a":
-		case "A":
-		case "4":
-			directionBuffer = direction;
-			if (/* (0 + 2) % 4 */1 != directionBuffer) {
-				direction = 3;
-			}
-			break;
-		case "s":
-		case "S":
-		case "2":
-			directionBuffer = direction;
-			if (/* (0 + 2) % 4 */0 != directionBuffer) {
-				direction = 2;
-			}
-			break;
-		case "d":
-		case "D":
-		case "6":
-			directionBuffer = direction;
-			if (/* (0 + 2) % 4 */3 != directionBuffer) {
-				direction = 1;
-			}
-			break;
-		case " ":
-			if (speed < 8) {
-				speed++;
-				inputThread.input = "";
+	public void commandSnek(InputThread inputThread) {
+		if (ourInputIs(inputThread, "w", "W", "8")) {
+			directSnek(Direction.up);
+		}
+		if (ourInputIs(inputThread, "a", "A", "4")) {
+			directSnek(Direction.left);
+		}
+		if (ourInputIs(inputThread, "s", "S", "2")) {
+			directSnek(Direction.down);
+		}
+		if (ourInputIs(inputThread, "d", "D", "6")) {
+			directSnek(Direction.right);
+		}
+		if (ourInputIs(inputThread, " ")) {
+			speedSnekUp(inputThread);
+		}
+	}
+
+	private boolean ourInputIs(InputThread inputThread, String... input) {
+		for (String c : input) {
+			if (inputThread.input.equals(c)) {
+				return true;
 			}
 		}
-		return direction;
+		return false;
+	}
+
+	private void speedSnekUp(InputThread inputThread) {
+		if (speed < 8) {
+			speed++;
+			inputThread.input = "";
+		}
+	}
+
+	private void directSnek(Direction direction) {
+		if ((this.direction.ordinal() - 2) % 4 != direction.ordinal()) {
+			this.direction = direction;
+		}
 	}
 
 	public void snekDies() {
@@ -81,7 +77,6 @@ public class Snek {
 	}
 
 	public void snekMoves() {
-		// 0-up, 1-right, 2-down, 3-left
 		for (int i = this.size; i >= 1; i--) {
 			if (snek[i].isActive) {
 				snek[i].posX = snek[i - 1].posX;
@@ -90,24 +85,28 @@ public class Snek {
 			}
 		}
 		switch (direction) {
-		case 0:
+		case up:
 			snek[0].posX--;
 			snek[0].body = (char) 94;
 			break;
-		case 1:
+		case right:
 			snek[0].posY++;
 			snek[0].body = (char) 62;
 			break;
-		case 2:
+		case down:
 			snek[0].posX++;
 			snek[0].body = (char) 118;
 			break;
-		case 3:
+		case left:
 			snek[0].posY--;
 			snek[0].body = (char) 60;
 		}
 
 		snek[this.size].activate();
 
+	}
+
+	enum Direction {
+		up, right, down, left
 	}
 }
