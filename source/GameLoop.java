@@ -19,6 +19,7 @@ public class GameLoop {
 
 		while (snek.isAlive) {
 
+			cls();
 			map.reset();
 			snek.commandSnek(inputThread);
 			snek.snekMoves();
@@ -37,8 +38,6 @@ public class GameLoop {
 
 			map.setMapPart(snek.head());
 
-			cls();
-
 			map.draw();
 
 			System.out.println("Score: " + snek.score + "\t\t Speed: " + snek.speed);
@@ -51,6 +50,7 @@ public class GameLoop {
 		snek.snekDies();
 		inputThread.runSign = snek.isAlive;
 		System.out.println("You fucked up");
+		map.gameOverMap();
 	}
 
 	private boolean snekHeadIsNotOnEmptyField() {
