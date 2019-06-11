@@ -46,7 +46,7 @@ public class Snek {
 
     private boolean ourInputIs(InputThread inputThread, String... input) {
         for (String c : input) {
-            if (inputThread.input.equals(c)) {
+            if (inputThread.input.endsWith(c)) {
                 return true;
             }
         }
